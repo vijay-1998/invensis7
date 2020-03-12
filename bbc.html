@@ -1,0 +1,270 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Basic UNIX commands</title>
+</head>
+<body>
+<h1> Basic UNIX commands  </h1>
+
+Note: not all of these are actually part of UNIX itself, and you may
+not find them on all UNIX machines. But they can all be used on <b>turing</b>
+in essentially the same way, by typing the command and hitting
+return. Note that some of these commands are different on non-Solaris
+machines - see <a href="http://mally.stanford.edu/~sr/computing/sunos-diffs.html">SunOS differences</a>.
+<br>
+If you've made a typo, the easiest thing to do is hit <b>CTRL-u</b> to
+cancel the whole line. But you can also edit the command line (see the
+guide to <a href="http://mally.stanford.edu/~sr/computing/more-unix.html#com">More UNIX</a>). 
+<br>
+UNIX is case-sensitive.
+
+<h2>Files</h2>
+<ul>
+<li><b>ls</b> --- lists your files
+<br>
+<b>ls -l</b> --- lists your files in 'long format', which contains lots of
+useful information, e.g. the exact size of the file, who owns the file
+and who has the right to look at it, and when it was last modified.
+<br> 
+<b>ls -a </b> --- lists all files, including the ones whose filenames begin in
+a dot, which you do not always want to see.
+<br>
+There are many more options, for example to list files by size, by
+date, recursively etc.
+</li><li><b>more <i>filename</i></b> --- shows the first part of a file,
+just as much as will fit on one screen. Just hit the space bar to see
+more or <b>q</b> to quit. You can use <b>/<i>pattern</i></b> to
+search for a pattern.
+</li><li><b>emacs <i>filename</i></b> --- is an editor that lets you
+     create and edit a file. See the <a href="http://mally.stanford.edu/~sr/computing/emacs.html">emacs page</a>.
+</li><li><b>mv <i>filename1 filename2</i></b> --- moves a file (i.e. gives
+it a different name, or moves it into a different directory (see below)
+</li><li><b>cp <i>filename1 filename2</i></b> --- copies a file
+</li><li><b>rm <i>filename</i></b> --- removes a file. It is wise to use
+the option rm -i, which will ask you for confirmation before actually
+deleting anything. You can make this your default by making an <a href="http://mally.stanford.edu/~sr/computing/alias.html">alias</a> in your .cshrc file.
+</li><li><b>diff <i>filename1 filename2</i></b> --- compares files, and
+shows where they differ
+</li><li><b>wc <i>filename</i></b> --- tells you how many lines, words,
+and characters there are in a file
+</li><li><b>chmod <i>options filename</i></b> --- lets you change the read,
+write, and execute permissions on your files. The default is that only
+you can look at them and change them, but you may sometimes want to
+change these permissions. For example, <b>chmod o+r
+<i>filename</i></b> will make the file readable for everyone, and 
+<b>chmod o-r <i>filename</i></b> will make it unreadable for others
+again. Note that for someone to be able to actually look at the file
+the directories it is in need to be at least executable. See <a href="http://www-csli.stanford.edu/Help/.help/intro-computer/protection">help protection</a> for more details.
+</li><li>File Compression
+<ul>
+<li><b>gzip <i>filename</i></b> --- compresses files, so that they
+take up much less space. Usually text files compress to about half
+their original size, but it depends very much on the size of the file
+and the nature of the contents. There are other tools for this
+purpose, too (e.g. <b>compress</b>), but gzip usually gives the
+highest compression rate. Gzip produces files with the ending '.gz'
+appended to the original filename.
+</li><li><b>gunzip <i>filename</i></b> --- uncompresses files compressed by gzip.
+</li><li><b>gzcat <i>filename</i></b> --- lets you look at a gzipped file without
+actually having to gunzip it (same as <b>gunzip -c</b>). You can even
+print it directly, using <b>gzcat <i>filename</i> | lpr</b>
+</li></ul>
+</li><li><a name="pr">printing</a>
+<ul>
+<li><b>lpr <i>filename</i></b> --- print. Use the -P option to specify
+the printer name if you want to use a printer other than your default
+printer. For example, if you want to print double-sided, use 'lpr
+-Pvalkyr-d', or if you're at CSLI, you may want to use 'lpr
+-Pcord115-d'. See 'help printers' for more information about printers
+and their locations.
+</li><li><b>lpq</b> --- check out the printer queue, e.g. to get the
+number needed for removal, or to see how many other files will be  printed
+before yours will come out
+</li><li><b>lprm <i>jobnumber</i></b> --- remove something from the
+printer queue. You can find the job number by using lpq. Theoretically
+you also have to specify a printer name, but this isn't necessary as
+long as you use your default printer in the department.
+</li><li><b>genscript</b> --- converts plain text files into postscript
+for printing, and gives you some options for formatting. Consider
+making an alias like <b>alias ecop 'genscript -2 -r \!* | lpr -h -Pvalkyr'</b>
+to print two pages on one piece of paper.
+</li><li><b>dvips <i>filename</i></b> --- print <b>.dvi</b> files (i.e.
+files produced by LaTeX). You can use <b>dviselect</b> to print only
+selected pages. See the <a href="http://mally.stanford.edu/~sr/computing/latex.html">LaTeX page</a> for more
+information about how to save paper when printing drafts.
+</li></ul>
+</li></ul>
+
+<h2>Directories</h2>
+Directories, like folders on a Macintosh, are used to group files
+together in a hierarchical structure.
+<ul>
+<li><b>mkdir <i>dirname</i></b> --- make a new directory
+</li><li><b>cd <i>dirname</i></b> --- change directory. You basically 'go'
+to another directory, and you will see the files in that directory
+when you do 'ls'. You always start out in your 'home directory', and
+you can get back there by typing 'cd' without arguments. 'cd ..' will
+get you one level up from your current position. You don't have to
+walk along step by step - you can make big leaps or avoid walking
+around by specifying <a href="http://mally.stanford.edu/~sr/computing/pathnames.html">pathnames</a>.
+</li><li><b>pwd</b> --- tells you where you currently are.
+</li></ul>
+
+<h2>Finding things</h2>
+<ul>
+<li><b>ff</b> --- find files anywhere on the system. This can be
+extremely useful if you've forgotten in which directory you put a
+file, but do remember the name. In fact, if you use <b>ff -p</b> you don't
+even need the full name, just the beginning. This can also be useful
+for finding other things on the system, e.g. documentation. 
+</li><li><b>grep <i>string filename(s)</i></b> --- looks for the string in
+the files. This can be useful a lot of purposes, e.g. finding
+the right file among many, figuring out which is the right version of
+something, and even  doing serious corpus work. grep comes in several
+varieties (<b>grep</b>, <b>egrep</b>, and <b>fgrep</b>) and has a lot
+of very flexible options. Check out the man pages if this sounds good
+to you.
+</li></ul>
+
+<h2>About other people</h2>
+<ul>
+<li><b>w</b> --- tells you who's logged in, and what they're doing.
+Especially useful: the 'idle' part. This allows you to see whether
+they're actually sitting there typing away at their keyboards right at
+the moment.
+</li><li><b>who</b> --- tells you who's logged on, and where they're
+coming from. Useful if you're looking for someone who's actually
+physically in the same building as you, or in some other particular
+location.
+</li><li><b>finger <i>username</i></b> --- gives you lots of information
+about that user, e.g. when they last read their mail and whether they're
+logged in. Often people put other practical information, such as phone
+numbers and addresses, in a file called <b>.plan</b>. This information is
+also displayed by 'finger'.
+</li><li><b>last -1 <i>username</i></b> --- tells you when the user last
+logged on and off and from where. Without any options, <b>last</b> will
+give you a list of everyone's logins.
+</li><li><b>talk <i>username</i></b> --- lets you have a (typed) conversation with
+another user
+</li><li><b>write <i>username</i></b> --- lets you exchange one-line
+messages with another user
+</li><li><b>elm</b> --- lets you send e-mail messages to people around the
+world (and, of course, read them). It's not the only mailer you can
+use, but the one we recommend. See the <a href="http://mally.stanford.edu/~sr/computing/elm.html">elm
+page</a>, and find out about the departmental <a href="http://mally.stanford.edu/~sr/computing/mailing-lists">
+mailing lists</a> (which you can also find in
+/user/linguistics/helpfile).
+</li></ul>
+
+<h2>About your (electronic) self</h2>
+<ul>
+<li><b>whoami</b> --- returns your username. Sounds useless, but
+isn't. You may need to find out who it is who forgot to log
+out somewhere, and make sure *you* have logged out.
+</li><li><b>finger</b> &amp; .plan files
+<br> of course you can finger yourself, too. That can be useful e.g.
+as a quick check whether you got new mail. Try to create a useful
+.plan file soon. Look at other people's .plan files for ideas. The
+file needs to be readable for everyone in order to be visible through
+'finger'. Do 'chmod a+r .plan' if necessary. You should realize that
+this information is accessible from anywhere in the world, not just to
+other people on turing.
+</li><li><b>passwd</b> --- lets you change your password, which you should
+     do regularly (at least once a year). See the <a href="http://mally.stanford.edu/~sr/computing/lrb-computing.html#first">LRB guide</a> and/or look at <a href="http://www-csli.stanford.edu/Help/.help/intro-computer/password">help password</a>.
+</li><li><b>ps -u <i>yourusername</i></b> --- lists your processes. Contains lots of
+information about them, including the process ID, which you need
+if you have to kill a process. Normally, when you have been kicked out
+of a dialin session or have otherwise managed to get yourself
+disconnected abruptly, this list will contain the processes you need
+to kill. Those may include the shell (tcsh or whatever you're using),
+and anything you were running, for example emacs or elm. Be careful
+not to kill your current shell - the one with the number closer to
+the one of the ps command you're currently running. But if it happens,
+don't panic. Just try again :) If you're using an X-display you may
+have to kill some X processes before you can start them again. These
+will show only when you use <b>ps -efl</b>, because they're root
+processes.
+</li><li><b>kill <i>PID</i></b> --- kills (ends) the processes with the ID
+you gave. This works only for your own processes, of course. Get the
+ID by using <b>ps</b>. If the process doesn't 'die' properly, use
+the option -9. But attempt without that option first, because it
+doesn't give the process a chance to finish possibly important
+business before dying. You may need to kill processes for example if
+your modem connection was interrupted and you didn't get logged out
+properly, which sometimes happens.
+</li><li><b>quota -v</b> --- show what your disk quota
+is (i.e. how much space you have to store files), how much you're
+actually using, and in case you've exceeded your quota (which you'll
+be given an automatic warning about by the system) how much time you
+have left to sort them out (by deleting or gzipping some, or moving
+them to your own computer).
+</li><li><b>du <i>filename</i></b> --- shows the disk usage of the files and
+directories in <i>filename</i> (without argument the current directory
+is used). <b>du -s</b> gives only a total.
+</li><li><b>last <i>yourusername</i></b> --- lists your last logins. Can
+be a useful memory aid for when you were where, how long you've been
+working for, and keeping track of your phonebill if you're making a
+non-local phonecall for dialling in.
+</li></ul>
+
+<h2>Connecting to the outside world</h2>
+<ul>
+<li><b>nn</b> --- allows you to read news. It will first let you read
+the news local to turing, and then the remote news. If you want to read
+only the local or remote news, you can use <b>nnl</b> or <b>nnr</b>,
+respectively. To learn more about <b>nn</b> type <b>nn</b>, then
+\tty{:man}, then \tty{=.*}, then \tty{Z}, then hit the space bar to
+step through the manual. Or look at the man page. Or check out the
+<a href="http://www.cis.ohio-state.edu/hypertext/faq/usenet/usenet/software/nn/getting-started/faq.html">hypertext
+nn FAQ</a> - probably the easiest and most fun way to go.
+</li><li><b>rlogin <i>hostname</i></b> --- lets you connect to a remote host
+</li><li><b>telnet <i>hostname</i></b> --- also lets you connect to a
+     remote host. Use <b>rlogin</b> whenever possible.
+</li><li><b>ftp <i>hostname</i></b> --- lets you download files from a
+remote host which is set up as an ftp-server. This is a common method
+for exchanging academic papers and drafts. If you need to make a paper
+of yours available in this way, you can (temporarily) put a copy in
+/user/ftp/pub/TMP. For more permanent solutions, ask Emma. The most
+important commands within ftp are <b>get</b> for getting files from
+the remote machine, and <b>put</b> for putting them there (<b>mget</b>
+and <b>mput</b> let you specify more than one file at once). Sounds
+straightforward, but be sure not to confuse the two, especially when
+your physical location doesn't correspond to the direction of the ftp
+connection you're making. ftp just overwrites files with the same
+filename. If you're transferring anything other than ASCII text, use
+binary mode. 
+</li><li><b>lynx</b> --- lets you browse the web from an ordinary
+terminal. Of course you can see only the text, not the pictures.
+You can type any URL as an argument to the <b>G</b> command. When
+you're doing this from any Stanford host you can leave out the
+<b>.stanford.edu</b> part of the URL when connecting to Stanford URLs.
+Type <b>H</b> at any time to learn more about <b>lynx</b>, and
+<b>Q</b> to exit.
+</li></ul>
+
+<h2>Miscellaneous tools</h2>
+<ul>
+<li><b>webster <i>word</i></b> --- looks up the word in an electronic
+version of Webster's dictionary and returns the definition(s)
+</li><li><b>date</b> --- shows the current date and time.
+</li><li><b>cal</b> --- shows a calendar of the current month. Use e.g.,
+'cal 10 1995' to get that for October 95, or 'cal 1995' to get the
+whole year.
+</li></ul>
+
+You can find out more about these commands by looking up their
+manpages:
+<br>
+<b>man <i>commandname</i></b>   --- shows you the manual page for
+the command
+<p>
+For further ways of obtaining help, look at the pages with <a href="http://mally.stanford.edu/~sr/computing/el-sources.html">electronic sources of information</a>
+and <a href="http://mally.stanford.edu/~sr/computing/non-el-sources.html">non-electronic sources</a>.
+</p><p>
+<a href="http://mally.stanford.edu/~sr/computing/more-unix.html">More UNIX commands</a>
+
+</p><hr>
+<a href="http://mally.stanford.edu/~sr/computing/index.html">Back up to the Main Computing Page</a>
+<hr>
+
+
+</body></html>
